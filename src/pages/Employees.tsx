@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-interface IEmployee {
+export interface IEmployee {
     employeeID: number;
     firstName: string;
     lastName: string;
