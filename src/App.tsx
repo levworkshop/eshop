@@ -1,9 +1,26 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.scss';
+import Details from './pages/Details';
 import Employees from './pages/Employees';
 
 function App() {
     return (
-        <Employees />
+        <Routes>
+            <Route
+                path='/'
+                element={<Employees />}
+            />
+
+            <Route
+                path='/details'
+                element={<Details />}
+            />
+
+            <Route
+                path='/details/:id'
+                element={<Details />}
+            />
+        </Routes>
     );
 }
 

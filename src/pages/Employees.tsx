@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface IEmployee {
     employeeID: number;
@@ -30,9 +31,12 @@ function Employees() {
     return (
         <>
             <div className="bg-dark p-4">
-                <button className="btn btn-primary">
+                <Link
+                    to="/details"
+                    className="btn btn-primary"
+                >
                     Add Employee
-                </button>
+                </Link>
             </div>
 
             <table className="table">
@@ -53,9 +57,11 @@ function Employees() {
                                 key={emp.employeeID}
                             >
                                 <td>
-                                    <a href="">
+                                    <Link
+                                        to={`/details/${emp.employeeID}`}
+                                    >
                                         {emp.employeeID}
-                                    </a>
+                                    </Link>
                                 </td>
                                 <td>{emp.firstName}</td>
                                 <td>{emp.lastName}</td>
