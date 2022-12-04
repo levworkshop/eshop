@@ -29,6 +29,12 @@ function Employees() {
 
     return (
         <>
+            <div className="bg-dark p-4">
+                <button className="btn btn-primary">
+                    Add Employee
+                </button>
+            </div>
+
             <table className="table">
                 <thead>
                     <tr>
@@ -37,6 +43,7 @@ function Employees() {
                         <th scope="col">Last</th>
                         <th scope="col">Address</th>
                         <th scope="col">Status</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,11 +52,22 @@ function Employees() {
                             <tr
                                 key={emp.employeeID}
                             >
-                                <td>{emp.employeeID}</td>
+                                <td>
+                                    <a href="">
+                                        {emp.employeeID}
+                                    </a>
+                                </td>
                                 <td>{emp.firstName}</td>
                                 <td>{emp.lastName}</td>
                                 <td>{emp.streetAddress}, {emp.city}</td>
                                 <td>{statusFormat(emp.status)}</td>
+                                <td>
+                                    <button
+                                        className="btn btn-default"
+                                    >
+                                        <i className="bi-trash"></i>
+                                    </button>
+                                </td>
                             </tr>
                         )
                     }
