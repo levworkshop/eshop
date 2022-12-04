@@ -1,13 +1,10 @@
 <?php
 
-// should be in a separate file
-define('DB_CONFIG', 'mysql:host=localhost;dbname=eshop;charset=utf8');
-define('DB_USER', 'root');
-define('DB_PASSWORD', 'password');
+require_once('../api/config.php');
 
 try {
 
-    $db = new PDO(DB_CONFIG, DB_USER, DB_PASSWORD);
+    $db = new PDO(DB_CONFIG, DB_USER, DB_PWD);
     // $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
     $sql = "SELECT firstName, lastName FROM employees";
     $statusOrig = $_GET['status'];

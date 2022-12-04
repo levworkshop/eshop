@@ -1,0 +1,12 @@
+// @use "./theme/colors"; // dart-sass compiler
+@import "./theme/colors"; // LibSass compiler - deprecated
+// docs: https: //create-react-app.dev/docs/adding-a-sass-stylesheet
+
+// body table {
+//     background-color: $primary !important;
+//     color: white !important;
+// }
+
+a {
+    color: $secondary;
+}
