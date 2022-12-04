@@ -12,8 +12,11 @@ export interface IEmployee {
     updatedAt: string;
 }
 
+type resJson = { ok: boolean };
+
 function Employees() {
     const [employees, setEmployees] = useState<Array<IEmployee>>([]);
+    const [error, setError] = useState<string>('');
 
     useEffect(() => {
         fetch('http://localhost/eshop/api/get_employees.php')
@@ -27,6 +30,31 @@ function Employees() {
         return !value ? '' : 'Active';
     }
 
+    function handleDelete(employee: IEmployee) {
+        const eid = employee.employeeID + '';
+        const formData = new FormData();
+        formData.append('id', eid);
+
+        fetch('http://localhost/eshop/api/del_emp.php', {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData
+        })
+            .then(res => res.json())
+            .then((json: resJson) => {
+                if (json.ok === true) {
+                    const updated = [...employees].filter(
+                        emp => emp.employeeID !== employee.employeeID
+                    );
+                    setEmployees(updated);
+                }
+                else {
+                    setError(`Failed to delete employee: ${eid}`);
+                }
+            })
+    }
 
     return (
         <>
@@ -69,6 +97,7 @@ function Employees() {
                                 <td>{statusFormat(emp.status)}</td>
                                 <td>
                                     <button
+                                        onClick={() => handleDelete(emp)}
                                         className="btn btn-default"
                                     >
                                         <i className="bi-trash"></i>
@@ -79,6 +108,13 @@ function Employees() {
                     }
                 </tbody>
             </table>
+
+            {
+                error &&
+                <div className="text-danger">
+                    {error}
+                </div>
+            }
         </>
     );
 }
