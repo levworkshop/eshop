@@ -12,7 +12,7 @@ export interface IEmployee {
     updatedAt: string;
 }
 
-type resJson = { ok: boolean };
+export type resJson = { ok: string };
 
 function Employees() {
     const [employees, setEmployees] = useState<Array<IEmployee>>([]);
@@ -31,22 +31,20 @@ function Employees() {
     }
 
     function handleDelete(employee: IEmployee) {
-        const eid = employee.employeeID + '';
-        const formData = new FormData();
-        formData.append('id', eid);
+        const eid = employee.employeeID;
 
         fetch('http://localhost/eshop/api/del_emp.php', {
             method: 'DELETE',
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Content-Type": "application/json"
             },
-            body: formData
+            body: JSON.stringify({ id: eid })
         })
             .then(res => res.json())
             .then((json: resJson) => {
-                if (json.ok === true) {
+                if (json.ok === "true") {
                     const updated = [...employees].filter(
-                        emp => emp.employeeID !== employee.employeeID
+                        emp => emp.employeeID !== eid
                     );
                     setEmployees(updated);
                 }

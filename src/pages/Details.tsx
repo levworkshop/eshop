@@ -1,6 +1,7 @@
+import Joi from "joi";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { IEmployee } from "./Employees";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { IEmployee, resJson } from "./Employees";
 
 enum eCity {
     ramatGan = 'Ramat Gan',
@@ -9,6 +10,7 @@ enum eCity {
 }
 
 function Details() {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
@@ -40,6 +42,50 @@ function Details() {
     function handleCityChange(value: string) {
         const city = value as eCity;
         setCity(city);
+    }
+
+    function handleSubmit() {
+        const schema = Joi.object().keys({
+            firstName: Joi.string().required().min(2),
+            lastName: Joi.string().required().min(2),
+            address: Joi.string().required().min(3),
+        })
+
+        const { error, value } = schema.validate({
+            firstName,
+            lastName,
+            address
+        })
+
+        if (error) {
+            setError(error.message);
+            return;
+        }
+
+        if (!id) { // add
+            value.city = city;
+            value.status = status;
+
+            fetch('http://localhost/eshop/api/add_emp.php', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(value)
+            })
+                .then(res => res.json())
+                .then((json: resJson) => {
+                    if (json.ok === "true") {
+                        navigate('/');
+                    }
+                    else {
+                        setError(`Failed to add employee`);
+                    }
+                })
+        }
+        else { // update
+
+        }
     }
 
     return (
@@ -101,7 +147,10 @@ function Details() {
             </div>
 
             <div className="mt-3">
-                <button className="btn btn-primary me-3">
+                <button
+                    onClick={handleSubmit}
+                    className="btn btn-primary me-3"
+                >
                     Submit
                 </button>
 
